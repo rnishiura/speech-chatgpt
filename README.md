@@ -16,7 +16,7 @@ python main.py
 ```
 
 ## Usage
-Follow the instructions provided in the program.
+Run this app and further instruction is provided.
 
 ## Models
 
