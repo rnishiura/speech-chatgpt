@@ -1,11 +1,11 @@
+undetected_chromedriver
 numpy==1.22.4
 librosa
+pyaudio
+soundfile
+SpeechRecognition
 torch
 torchaudio
-pyaudio
 git+https://github.com/huggingface/transformers
 sentencepiece
 datasets
-soundfile
-undetected_chromedriver
-SpeechRecognition

@@ -1,18 +1,21 @@
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 from datasets import load_dataset
 import librosa
+import torch
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # load model and processor
 model_name = "openai/whisper-small"
 processor = WhisperProcessor.from_pretrained(model_name)
-model = WhisperForConditionalGeneration.from_pretrained(model_name)
+model = WhisperForConditionalGeneration.from_pretrained(model_name).to(device)
 model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(language="english", task="transcribe")
 # model.config.forced_decoder_ids = None
 
 def recognize(filepath="output.wav"):
   speech_array, sampling_rate = librosa.load(filepath, sr=16_000)
 
-  input_features = processor(speech_array, sampling_rate=sampling_rate, return_tensors="pt").input_features 
+  input_features = processor(speech_array, sampling_rate=sampling_rate, return_tensors="pt").to(device).input_features 
 
   # generate token ids
   predicted_ids = model.generate(input_features, max_new_tokens=448)

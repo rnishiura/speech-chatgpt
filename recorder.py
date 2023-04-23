@@ -1,5 +1,4 @@
 import time
-import speech_recognition
 import pyaudio
 from threading import Thread
 import wave
@@ -9,9 +8,9 @@ import sys
 continue_flg = True
 # CHUNK = 1024
 FORMAT = pyaudio.paInt16
-CHANNELS = 1 if sys.platform == 'darwin' else 2
+# CHANNELS = 1 if sys.platform == 'darwin' else 2
 SAMPLERATE = 16000
-mic_name = "MacBook Proのマイク"
+# mic_name = "MacBook Proのマイク"
 
 """ to stop recording """
 def stop_func():
@@ -28,27 +27,21 @@ def callback(in_data, frame_count, time_info, status):
     
 """ record streamer """
 def record(filepath='output.wav'):
-    global sprec, continue_flg, wf
+    global sprec, continue_flg, wf, CHANNELS
 
     audio = pyaudio.PyAudio() 
+    input_device_index = audio.get_default_input_device_info()['index']
+    channels = audio.get_device_info_by_index(input_device_index)['maxInputChannels']
 
     wf = wave.open(filepath, 'wb')
-    wf.setnchannels(CHANNELS)
+    wf.setnchannels(channels)
     wf.setsampwidth(audio.get_sample_size(FORMAT))
     wf.setframerate(SAMPLERATE)
 
-    # with wave.open('output.wav', 'wb') as wf:
-    sprec = speech_recognition.Recognizer()  # インスタンスを生成
-    # Audio インスタンス取得
-
-    for x in range(0, audio.get_device_count()): 
-        if audio.get_device_info_by_index(x)['name'] == mic_name:
-          mic_index = audio.get_device_info_by_index(x)['index']
-      
-    stream = audio.open( format = pyaudio.paInt16,
+    stream = audio.open( format = FORMAT,
                         rate = SAMPLERATE,
-                        channels = CHANNELS, 
-                        input_device_index = mic_index,
+                        channels = channels, 
+                        input_device_index = input_device_index,
                         input = True, 
                         frames_per_buffer = SAMPLERATE*2, # 2秒周期でコールバック
                         stream_callback=callback)
@@ -65,7 +58,7 @@ def record(filepath='output.wav'):
     # while continue_flg:
     # for _ in range(0, RATE // CHUNK * RECORD_SECONDS):
         # wf.writeframes(stream.read(CHUNK))
-        time.sleep(0.1)
+        time.sleep(0.05)
         # pass
 
     stream.stop_stream()

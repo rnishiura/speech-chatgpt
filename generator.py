@@ -10,27 +10,27 @@ import librosa
 import random
 import time
 
-speaker_id = 7306
-# speaker_id = 7930
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-# speaker_id = random.randint(0, 7931)
+speaker_id = 7306
 print("Speaker: ", speaker_id)
+
 
 """ speech generation model """
 s_processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
-s_model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
-vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+s_model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts").to(device)
+
+vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan").to(device)
 
 embeddings_dataset = load_dataset("Matthijs/cmu-arctic-xvectors", split="validation")
-speaker_embeddings = torch.tensor(embeddings_dataset[speaker_id]["xvector"]).unsqueeze(0)
-
+speaker_embeddings = torch.tensor(embeddings_dataset[speaker_id]["xvector"]).unsqueeze(0).to(device)
 
 def generate(text, filepath='output.wav'):
   # speech generation
-  inputs = s_processor(text=text, return_tensors="pt")
+  inputs = s_processor(text=text, return_tensors="pt").to(device)
   speech = s_model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
 
-  sf.write(filepath, speech.numpy(), samplerate=16000)
+  sf.write(filepath, speech.cpu().numpy(), samplerate=16000)
   # print("Speech audio saved.")
 
 # 56 61
