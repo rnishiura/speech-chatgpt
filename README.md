@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ## How to run
 ```
-python main.py
+python app.py
 ```
 
 ## Usage
