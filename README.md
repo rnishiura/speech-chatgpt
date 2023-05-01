@@ -1,5 +1,5 @@
 # Speech ChatGPT
-*Easy-to-use app for quality low-latency conversations in English speech with ChatGPT.*
+*An easy-to-use secure app for quality low-latency conversations in English speech with ChatGPT.*
 
 ## Requirements
 ```
@@ -8,7 +8,7 @@ cd speech-chatgpt
 pip install -r requirements.txt
 ```
 * Your computer also has to have [Google Chrome](https://www.google.com/chrome/) installed as its automated testing is used to manage ChatGPT.
-* This app auto detects CUDA for faster speech recognition and generation. Please follow https://pytorch.org to install `torch` and `torchaudio` with CUDA support. Notice `pip install -r requirements.txt` may install PyTorch without CUDA.
+* This app auto detects CUDA for faster speech recognition and generation. Please follow https://pytorch.org to install `torch` and `torchaudio` with CUDA support. Note that `pip install -r requirements.txt` may install PyTorch without CUDA.
 
 ## How to run
 ```

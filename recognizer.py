@@ -1,24 +1,27 @@
-import speech_recognition
+from transformers import pipeline
+import librosa
+import torch
 
-# obsolete: limited usage for free user
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-def recognize(filepath='output.wav'):
-  # filepath = 'speech.wav'
-  r = speech_recognition.Recognizer()
+# load model and processor
+model_name = "openai/whisper-small"
+pipe = pipeline(
+  "automatic-speech-recognition",
+  model=model_name,
+  chunk_length_s=30,
+  device=device,
+  max_new_tokens=448,
+)
 
-  output = speech_recognition.AudioFile(filepath)
-  with output as source:
-    audio = r.record(source)
-
-  # print(type(audio))
-
-  text = r.recognize_google(audio)
-  # text = r.recognize_google(audio, language='ja-JP')
-  # print(text)
-
-  return text
-  # print(r.recognize_google(audio, show_all=True))
+def recognize(filepath="output.wav"):
+  speech_array, sampling_rate = librosa.load(filepath, sr=16_000)
+  prediction = pipe(speech_array)["text"]
+  return prediction
+  # we can also return timestamps for the predictions
+  # prediction = pipe(speech_array, return_timestamps=True)["chunks"]
+  # print(prediction)
 
 if __name__ == "__main__":
+  print("recognizing...")
   print(recognize())
-  
