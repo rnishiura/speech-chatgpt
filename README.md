@@ -10,7 +10,7 @@ cd speech-chatgpt
 pip install -r requirements.txt
 ```
 
-- Your computer also has to have [Google Chrome](https://www.google.com/chrome/) installed as its automated testing is used to manage ChatGPT.
+- Your computer also has to have [Google Chrome](https://www.google.com/chrome/) installed as its automated testing is used to manage ChatGPT service.
 - This app auto detects CUDA for faster speech recognition and generation. Please follow https://pytorch.org to install `torch` and `torchaudio` with CUDA support. Note that `pip install -r requirements.txt` may install PyTorch without CUDA.
 
 ## How to run
@@ -21,7 +21,7 @@ python app.py
 
 ## Usage
 
-Run `app.py` and further instruction is provided.
+Run `app.py` and further instruction is provided. You don't need to give any credentials to this app. Just login to the ChatGPT service.
 
 ## Models
 
