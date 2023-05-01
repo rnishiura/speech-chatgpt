@@ -2,7 +2,7 @@ from transformers import pipeline
 import librosa
 import torch
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 # load model and processor
 model_name = "openai/whisper-small"

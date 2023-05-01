@@ -10,7 +10,7 @@ import librosa
 import random
 import time
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 speaker_id = 7306
 print("Speaker: ", speaker_id)
